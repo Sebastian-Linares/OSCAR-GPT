@@ -1,115 +1,278 @@
-import Image from "next/image";
-import localFont from "next/font/local";
+import React from 'react';
+import { 
+  Brain, Lightbulb, PlayCircle, CheckCircle, Clock, 
+  ChevronRight, Users, BookOpen, Star
+} from 'lucide-react';
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-export default function Home() {
+const ModuleCard = ({ module, onSelect }) => {
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
+    <div 
+      style={{
+        background: 'linear-gradient(169deg, rgba(31, 41, 55, 0.7) 0%, rgba(17, 24, 39, 0.8) 100%)',
+        backdropFilter: 'blur(12px)',
+        borderRadius: '16px',
+        border: '1px solid rgba(139, 92, 246, 0.1)',
+        overflow: 'hidden',
+        transition: 'all 0.3s ease',
+        position: 'relative',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = 'translateY(-4px)';
+        e.currentTarget.style.boxShadow = '0 20px 40px -15px rgba(139, 92, 246, 0.1)';
+        e.currentTarget.style.border = '1px solid rgba(139, 92, 246, 0.3)';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = 'none';
+        e.currentTarget.style.border = '1px solid rgba(139, 92, 246, 0.1)';
+      }}
     >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              pages/index.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Header */}
+      <div style={{
+        padding: '24px',
+        borderBottom: '1px solid rgba(139, 92, 246, 0.1)',
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+          marginBottom: '16px'
+        }}>
+          <div style={{
+            background: `linear-gradient(135deg, ${module.color}20, ${module.color}05)`,
+            padding: '12px',
+            borderRadius: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <module.icon size={24} color={module.color} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <h2 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              color: '#fff',
+              marginBottom: '4px'
+            }}>
+              {module.title}
+            </h2>
+            <p style={{
+              color: 'rgba(156, 163, 175, 1)',
+              fontSize: '14px'
+            }}>
+              {module.description}
+            </p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        
+        {/* Stats */}
+        <div style={{
+          display: 'flex',
+          gap: '16px',
+          padding: '12px',
+          background: 'rgba(31, 41, 55, 0.4)',
+          borderRadius: '12px'
+        }}>
+          {[
+            { icon: Clock, label: `${module.modules.length * 30} min` },
+            { icon: BookOpen, label: `${module.modules.length} módulos` },
+            { icon: Users, label: '2.4k estudiantes' }
+          ].map((stat, idx) => (
+            <div key={idx} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              color: 'rgba(156, 163, 175, 1)',
+              fontSize: '13px'
+            }}>
+              <stat.icon size={14} />
+              <span>{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modules List */}
+      <div style={{ padding: '16px' }}>
+        {module.modules.map((subModule, idx) => (
+          <button
+            key={idx}
+            onClick={() => onSelect(subModule)}
+            style={{
+              width: '100%',
+              background: 'none',
+              border: 'none',
+              textAlign: 'left',
+              padding: '16px',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              position: 'relative',
+              marginBottom: idx !== module.modules.length - 1 ? '8px' : 0
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'none';
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '8px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}>
+                <StatusIcon status={subModule.status} />
+                <span style={{ color: '#fff', fontSize: '15px' }}>
+                  {subModule.title}
+                </span>
+              </div>
+              <ChevronRight size={16} color="rgba(156, 163, 175, 1)" />
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              color: 'rgba(156, 163, 175, 1)',
+              fontSize: '13px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={14} />
+                <span>{subModule.duration} min</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Star size={14} />
+                <span>{subModule.content.length} conceptos</span>
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const StatusIcon = ({ status }) => {
+  const statusConfig = {
+    completed: { 
+      icon: CheckCircle, 
+      color: '#34D399',
+      background: 'rgba(52, 211, 153, 0.1)',
+      text: 'Completado' 
+    },
+    inProgress: { 
+      icon: PlayCircle, 
+      color: '#60A5FA',
+      background: 'rgba(96, 165, 250, 0.1)',
+      text: 'En progreso' 
+    },
+    pending: { 
+      icon: Clock, 
+      color: '#9CA3AF',
+      background: 'rgba(156, 163, 175, 0.1)',
+      text: 'Pendiente' 
+    }
+  };
+
+  const config = statusConfig[status];
+  const Icon = config.icon;
+
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '6px',
+      padding: '6px 10px',
+      background: config.background,
+      borderRadius: '20px',
+      color: config.color,
+      fontSize: '12px'
+    }}>
+      <Icon size={14} />
+      <span>{config.text}</span>
+    </div>
+  );
+};
+
+// Ejemplo de uso
+export default function ModulesList() {
+  const modules = {
+    designThinking: {
+      id: 'dt',
+      title: 'Design Thinking',
+      description: 'Metodología centrada en el usuario',
+      icon: Brain,
+      color: '#8B5CF6',
+      modules: [
+        {
+          id: 'empathy',
+          title: 'Empatizar con usuarios',
+          duration: 45,
+          status: 'completed',
+          content: ['Entrevistas', 'Observación', 'Inmersión']
+        },
+        {
+          id: 'define',
+          title: 'Definir el problema',
+          duration: 30,
+          status: 'inProgress',
+          content: ['POV', 'How Might We', 'Insights']
+        }
+      ]
+    },
+    ideation: {
+      id: 'id',
+      title: 'Técnicas de Ideación',
+      description: 'Métodos para generar ideas innovadoras',
+      icon: Lightbulb,
+      color: '#EC4899',
+      modules: [
+        {
+          id: 'brainstorming',
+          title: 'Brainstorming Avanzado',
+          duration: 40,
+          status: 'pending',
+          content: ['Reglas', 'Facilitación', 'Clustering']
+        },
+        {
+          id: 'scamper',
+          title: 'Método SCAMPER',
+          duration: 35,
+          status: 'pending',
+          content: ['Sustituir', 'Combinar', 'Adaptar']
+        }
+      ]
+    }
+  };
+
+  return (
+    <div style={{
+      padding: '24px',
+      background: '#111827',
+      minHeight: '100vh'
+    }}>
+      <div style={{
+        maxWidth: '800px',
+        margin: '0 auto',
+        display: 'grid',
+        gap: '24px'
+      }}>
+        {Object.values(modules).map(module => (
+          <ModuleCard 
+            key={module.id} 
+            module={module}
+            onSelect={(subModule) => console.log('Selected:', subModule)}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        ))}
+      </div>
     </div>
   );
 }
